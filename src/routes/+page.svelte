@@ -1,16 +1,22 @@
 <script>
-	import { Heading } from 'flowbite-svelte';
+	import { Heading, P } from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
+	import { CACHE_TIME, API } from '../constants/query';
 
-	const DAY = 1000 * 60 * 60 * 24;
+	const queryUser = useQuery({
+		queryKey: ['user'],
+		queryFn: () => fetch(API.USER).then((res) => res.json()),
+		cacheTime: CACHE_TIME,
+		staleTime: CACHE_TIME,
+		select: (context) => context || []
+	});
 
-	const queryProfile = useQuery({
-		queryKey: ['user-profile'],
-		queryFn: () =>
-			fetch('https://api.github.com/repos/SvelteStack/svelte-query').then((res) => res.json()),
-		cacheTime: DAY,
-		staleTime: DAY,
-		select: (context) => context || {}
+	const queryRepositories = useQuery({
+		queryKey: ['repositories'],
+		queryFn: () => fetch(API.REPOSITORIES).then((res) => res.json()),
+		cacheTime: CACHE_TIME,
+		staleTime: CACHE_TIME,
+		select: (context) => context || []
 	});
 </script>
 
@@ -22,18 +28,12 @@
 <header>
 	<Heading tag="h1" class="mb-4">Pet projects</Heading>
 
-	{#if $queryProfile.isLoading}
-		Loading...
-	{:else if $queryProfile.error}
-		An error has occurred:
-		{$queryProfile.error}
-	{:else}
+	{#if $queryUser.data}
 		<div>
-			<h1>{$queryProfile.data.name}</h1>
-			<p>{$queryProfile.data.description}</p>
-			<strong>👀 {$queryProfile.data.subscribers_count}</strong>{' '}
-			<strong>✨ {$queryProfile.data.stargazers_count}</strong>{' '}
-			<strong>🍴 {$queryProfile.data.forks_count}</strong>
+			<P>avatar_url: {$queryUser.data.avatar_url}</P>
+			<P>bio: {$queryUser.data.bio}</P>
+			<P>location: {$queryUser.data.location}</P>
+			<P>name: {$queryUser.data.name}</P>
 		</div>
 	{/if}
 </header>
@@ -41,9 +41,25 @@
 <section>
 	<Heading tag="h2">Timeline</Heading>
 
-	<ul>
-		<li>Project 1</li>
-		<li>Project 2</li>
-		<li>Project 3</li>
-	</ul>
+	{#if $queryRepositories.isLoading}
+		Loading...
+	{:else if $queryRepositories.error}
+		An error has occurred:
+		{$queryRepositories.error}
+	{:else}
+		<ul>
+			{#each $queryRepositories.data as repo}
+				<li>
+					<Heading tag="h3">{repo.name}</Heading>
+					<P>created_at: {repo.created_at}</P>
+					<P>archived: {repo.archived}</P>
+					<P>description: {repo.description}</P>
+					<P>homepage: {repo.homepage}</P>
+					<P>language: {repo.language}</P>
+					<P>id: {repo.id}</P>
+					<P>topics: {repo.topics}</P>
+				</li>
+			{/each}
+		</ul>
+	{/if}
 </section>
