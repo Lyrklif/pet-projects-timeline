@@ -51,12 +51,14 @@
 			{#each $queryRepositories.data as repo}
 				<li>
 					<Heading tag="h3">{repo.name}</Heading>
+
+					<a href={`/pet/${repo.name}`}>View</a>
+
 					<P>created_at: {repo.created_at}</P>
 					<P>archived: {repo.archived}</P>
 					<P>description: {repo.description}</P>
 					<P>homepage: {repo.homepage}</P>
 					<P>language: {repo.language}</P>
-					<P>id: {repo.id}</P>
 					<P>topics: {repo.topics}</P>
 				</li>
 			{/each}
