@@ -1,4 +1,8 @@
 <script>
+	import { Alert } from 'flowbite-svelte';
+	import { Heading, P, Button } from 'flowbite-svelte';
+
+
 	import { useQuery } from '@sveltestack/svelte-query'
 
 	const DAY = 1000 * 60 * 60 * 24
@@ -22,7 +26,15 @@
 
 
 <header>
-	<h1 class="text-3xl font-bold underline">Pet projects</h1>
+	<Heading tag="h1" class="mb-4">
+		Pet projects
+	</Heading>
+
+
+	<Alert>
+		<span class="font-medium">Info alert!</span>
+		Change a few things up and try submitting again.
+	</Alert>
 
 	{#if $queryProfile.isLoading}
 		Loading...
