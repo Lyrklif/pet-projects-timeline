@@ -22,7 +22,7 @@
 
 
 <header>
-	<h1>Pet projects</h1>
+	<h1 class="text-3xl font-bold underline">Pet projects</h1>
 
 	{#if $queryProfile.isLoading}
 		Loading...
