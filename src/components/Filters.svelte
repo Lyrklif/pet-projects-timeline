@@ -4,36 +4,25 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let allFilters: Array<string>;
-	let uniqueFilters: Array<string> = Array.from(new Set(allFilters));
-	let filterCount: { [key: string]: number } = {};
-	let selectedFilters: Array<string> = [];
+	export let allFilters: string[] = [];
+	let selectedFilters: string[] = [];
 
-	const setCounts = () => {
-		allFilters.forEach((filter) => {
-			if (filterCount[filter]) {
-				filterCount[filter] += 1;
-			} else {
-				filterCount[filter] = 1;
-			}
-		});
-	};
+	$: filterCount = allFilters.reduce(
+		(acc, filter) => {
+			acc[filter] = (acc[filter] || 0) + 1;
+			return acc;
+		},
+		{} as { [key: string]: number }
+	);
 
-	const setUniqueFilters = () => {
-		uniqueFilters = Array.from(new Set(allFilters)).filter((item) => filterCount[item] > 1);
-	};
-
-	setCounts();
-	setUniqueFilters();
+	$: uniqueFilters = Object.keys(filterCount).filter((filter) => filterCount[filter] > 1);
 
 	const selectFilter = (filter: string) => {
-		const isSelected = selectedFilters.includes(filter);
-		if (isSelected) {
+		if (selectedFilters.includes(filter)) {
 			selectedFilters = selectedFilters.filter((f) => f !== filter);
 		} else {
 			selectedFilters = [...selectedFilters, filter];
 		}
-
 		dispatch('filter', selectedFilters);
 	};
 </script>
@@ -47,7 +36,6 @@
 			size="xs"
 		>
 			{filter}
-
 			<Indicator border size="xl" color="dark" placement="top-right" class="text-xs font-bold">
 				{filterCount[filter]}
 			</Indicator>

@@ -19,36 +19,34 @@
 
 	let description: string = '';
 
+	const decodeReadmeContent = (content: string) => {
+		const decodedData = atob(content);
+		const utf8Decoder = new TextDecoder('utf-8');
+
+		return utf8Decoder.decode(new Uint8Array([...decodedData].map((char) => char.charCodeAt(0))));
+	};
+
 	const queryReadme = useQuery({
 		queryKey: ['states', $page.params.name],
-		queryFn: () => fetch(API.REPO_README($page.params.name)).then((res) => res.json()),
+		queryFn: async () => {
+			const res = await fetch(API.REPO_README($page.params.name));
+			const data = await res.json();
+			return marked(decodeReadmeContent(data.content));
+		},
 		cacheTime: CACHE_TIME,
-		staleTime: CACHE_TIME,
-		select: (context) => {
-			// Декодируем содержимое README из Base64
-			const decodedData = atob(context.content);
-
-			// Декодируем строку в UTF-8
-			const utf8Decoder = new TextDecoder('utf-8');
-
-			const decodedContent = utf8Decoder.decode(
-				new Uint8Array([...decodedData].map((char) => char.charCodeAt(0)))
-			);
-
-			return marked(decodedContent);
-		}
+		staleTime: CACHE_TIME
 	});
 
 	const queryRepository = useQuery({
 		queryKey: ['repo', $page.params.name],
-		queryFn: () => fetch(API.REPOSITORY($page.params.name)).then((res) => res.json()),
+		queryFn: async () => {
+			const res = await fetch(API.REPOSITORY($page.params.name));
+			const data = await res.json();
+			description = data.description || 'No description';
+			return data;
+		},
 		cacheTime: CACHE_TIME,
-		staleTime: CACHE_TIME,
-		select: (context) => {
-			description = context.description || 'No description';
-
-			return context || {};
-		}
+		staleTime: CACHE_TIME
 	});
 </script>
 
@@ -67,7 +65,7 @@
 	<Spinner size="10" class="text-center mt-10" />
 {:else if $queryRepository.error}
 	<Alert color="red" class="mt-10">
-		{$queryRepository.error}
+		An error occurred: {$queryRepository.error}
 	</Alert>
 {:else}
 	<div class="text-center">
@@ -121,7 +119,7 @@
 		<Spinner size="10" class="text-center" />
 	{:else if $queryReadme.error}
 		<Alert color="red">
-			{$queryReadme.error}
+			Failed to load README: {$queryReadme.error}
 		</Alert>
 	{:else}
 		<div class="markdown">

@@ -23,55 +23,27 @@
 	let filteredList: Array<any> = [];
 
 	const handleFilter = ({ detail }: { detail: Array<string> }) => {
-		if (!detail.length) {
-			filteredList = list;
-
-			return;
-		}
-
-		filteredList = list.filter((project) => {
-			const topics = project.topics || [];
-			const selected = detail || [];
-			let has = false;
-
-			selected.forEach((tag) => {
-				if (topics.includes(tag)) {
-					has = true;
-				}
-			});
-
-			return has;
-		});
+		filteredList = detail.length
+			? list.filter((project) => project.topics?.some((topic) => detail.includes(topic)))
+			: list;
 	};
 
 	const queryRepositories = useQuery({
 		queryKey: ['repositories'],
-		queryFn: () => fetch(API.REPOSITORIES).then((res) => res.json()),
+		queryFn: async () => {
+			const response = await fetch(API.REPOSITORIES);
+			const repositories = await response.json();
+			return repositories.filter((repo) => repo.name !== import.meta.env.VITE_USER_NAME);
+		},
 		cacheTime: CACHE_TIME,
 		staleTime: CACHE_TIME,
-		select: (context) => {
-			if (!context?.length) {
-				return [];
-			}
-
-			const withoutSpecialRepository = context.filter(
-				(repo) => repo.name !== import.meta.env.VITE_USER_NAME
+		select: (repos) => {
+			repos.forEach((repo) => repo.topics?.forEach((topic: string) => topics.push(topic)));
+			list = repos.sort(
+				(a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 			);
-
-			withoutSpecialRepository.forEach((item) => {
-				if (item) {
-					item.topics.forEach((value) => {
-						topics.push(value);
-					});
-				}
-			});
-
-			withoutSpecialRepository.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-
-			list = withoutSpecialRepository;
-			filteredList = withoutSpecialRepository;
-
-			return withoutSpecialRepository;
+			filteredList = list;
+			return repos;
 		}
 	});
 </script>
@@ -97,19 +69,17 @@
 	</Alert>
 {:else}
 	<div class="mb-4">
-		<Filters allFilters={Array.from(topics)} on:filter={handleFilter} />
+		<Filters allFilters={topics} on:filter={handleFilter} />
 	</div>
 
 	<Timeline class="mt-6 w-full">
 		{#each filteredList as repo}
 			<TimelineItem title={repo.name} date={formatDate(repo.created_at)}>
-				<Card class=" max-w-full p-4 sm:p-4 mt-2">
+				<Card class="max-w-full p-4 sm:p-4 mt-2">
 					{#if repo.archived}
-						<div class="mb-2">
-							<Badge color="dark" rounded class="px-2.5 py-0.5">
-								<Indicator color="gray" size="xs" class="me-1" />Archived
-							</Badge>
-						</div>
+						<Badge color="dark" rounded class="px-2.5 py-0.5 mb-2 mr-auto">
+							<Indicator color="gray" size="xs" class="me-1" /> Archived
+						</Badge>
 					{/if}
 
 					<P class="text-base font-normal text-gray-500 dark:text-gray-400">
@@ -119,9 +89,7 @@
 					{#if repo.topics.length > 0}
 						<ul class="flex flex-wrap gap-1 mt-2">
 							{#each repo.topics as topic}
-								<li>
-									<Badge border color="dark">{topic}</Badge>
-								</li>
+								<Badge border color="dark">{topic}</Badge>
 							{/each}
 						</ul>
 					{/if}
@@ -129,9 +97,9 @@
 					<div class="flex flex-wrap gap-2 mt-4">
 						<ButtonGroup>
 							<Button href={`/pet/${repo.name}`} size="xs" outline color="dark">Details</Button>
-							<Button href={repo.html_url} target="_blank" size="xs" outline color="dark">
-								Code
-							</Button>
+							<Button href={repo.html_url} target="_blank" size="xs" outline color="dark"
+								>Code</Button
+							>
 						</ButtonGroup>
 
 						{#if repo.homepage}
