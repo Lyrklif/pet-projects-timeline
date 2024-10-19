@@ -1,5 +1,15 @@
 <script>
-	import { Heading, P } from 'flowbite-svelte';
+	import {
+		Heading,
+		P,
+		Badge,
+		Indicator,
+		Timeline,
+		TimelineItem,
+		Button,
+		GradientButton,
+		ButtonGroup
+	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../constants/query';
 
@@ -26,42 +36,52 @@
 </svelte:head>
 
 <header>
-	<Heading tag="h1" class="mb-4">Pet projects</Heading>
-
-	{#if $queryUser.data}
-		<div>
-			<P>avatar_url: {$queryUser.data.avatar_url}</P>
-			<P>bio: {$queryUser.data.bio}</P>
-			<P>location: {$queryUser.data.location}</P>
-			<P>name: {$queryUser.data.name}</P>
-		</div>
-	{/if}
+	<Heading tag="h1">Pet projects</Heading>
+	<P class="text-md text-gray-500 dark:text-gray-400 mt-3">{$queryUser.data.bio}</P>
 </header>
 
-<section>
-	<Heading tag="h2">Timeline</Heading>
+{#if $queryRepositories.isLoading}
+	Loading...
+{:else if $queryRepositories.error}
+	An error has occurred:
+	{$queryRepositories.error}
+{:else}
+	<Timeline class="mt-6">
+		{#each $queryRepositories.data as repo}
+			<TimelineItem title={repo.name} date={repo.created_at}>
+				{#if repo.archived}
+					<Badge color="dark" rounded class="px-2.5 py-0.5">
+						<Indicator color="gray" size="xs" class="me-1" />Archived
+					</Badge>
+				{/if}
 
-	{#if $queryRepositories.isLoading}
-		Loading...
-	{:else if $queryRepositories.error}
-		An error has occurred:
-		{$queryRepositories.error}
-	{:else}
-		<ul>
-			{#each $queryRepositories.data as repo}
-				<li>
-					<Heading tag="h3">{repo.name}</Heading>
+				<P class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+					{repo.description || 'No description'}
+				</P>
 
-					<a href={`/pet/${repo.name}`}>View</a>
+				{#if repo.topics.length > 0}
+					<ul class="flex flex-wrap gap-1 mt-2">
+						{#each repo.topics as topic}
+							<li>
+								<Badge border color="dark">{topic}</Badge>
+							</li>
+						{/each}
+					</ul>
+				{/if}
 
-					<P>created_at: {repo.created_at}</P>
-					<P>archived: {repo.archived}</P>
-					<P>description: {repo.description}</P>
-					<P>homepage: {repo.homepage}</P>
-					<P>language: {repo.language}</P>
-					<P>topics: {repo.topics}</P>
-				</li>
-			{/each}
-		</ul>
-	{/if}
-</section>
+				<div class="flex flex-wrap gap-2 mt-4">
+					<ButtonGroup>
+						<Button href={`/pet/${repo.name}`} outline color="dark">Details</Button>
+						<Button href={repo.html_url} target="_blank" outline color="dark">Code</Button>
+					</ButtonGroup>
+
+					{#if repo.homepage}
+						<GradientButton href={repo.homepage} target="_blank" outline color="greenToBlue">
+							Demo
+						</GradientButton>
+					{/if}
+				</div>
+			</TimelineItem>
+		{/each}
+	</Timeline>
+{/if}
