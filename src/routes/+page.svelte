@@ -72,6 +72,10 @@
 		<Filters allFilters={topics} on:filter={handleFilter} />
 	</div>
 
+	<P class="text-gray-500 dark:text-gray-400 mr-auto text-sm">
+		Found {filteredList.length} projects
+	</P>
+
 	<Timeline class="mt-6 w-full">
 		{#each filteredList as repo}
 			<TimelineItem title={repo.name} date={formatDate(repo.created_at)}>
