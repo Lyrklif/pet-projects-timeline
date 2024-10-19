@@ -62,7 +62,7 @@
 	An error has occurred:
 	{$queryReadme.error}
 {:else}
-	<div class="markdown-content">
+	<div class="markdown">
 		{@html $queryReadme.data}
 	</div>
 {/if}
