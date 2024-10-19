@@ -92,7 +92,6 @@
 {#if $queryRepositories.isLoading}
 	<Spinner size="10" class="text-center" />
 {:else if $queryRepositories.error}
-	An error has occurred:
 	<Alert color="red">
 		{$queryRepositories.error}
 	</Alert>

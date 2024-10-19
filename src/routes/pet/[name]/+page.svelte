@@ -66,7 +66,6 @@
 {#if $queryRepository.isLoading}
 	<Spinner size="10" class="text-center mt-10" />
 {:else if $queryRepository.error}
-	An error has occurred:
 	<Alert color="red" class="mt-10">
 		{$queryRepository.error}
 	</Alert>
@@ -121,7 +120,6 @@
 	{#if $queryReadme.isLoading}
 		<Spinner size="10" class="text-center" />
 	{:else if $queryReadme.error}
-		An error has occurred:
 		<Alert color="red">
 			{$queryReadme.error}
 		</Alert>
