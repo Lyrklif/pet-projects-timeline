@@ -6,7 +6,7 @@
 	import { marked } from 'marked';
 
 	const queryReadme = useQuery({
-		queryKey: ['states'],
+		queryKey: ['states', $page.params.name],
 		queryFn: () => fetch(API.REPO_README($page.params.name)).then((res) => res.json()),
 		cacheTime: CACHE_TIME,
 		staleTime: CACHE_TIME,
@@ -26,7 +26,7 @@
 	});
 
 	const queryRepository = useQuery({
-		queryKey: ['repo'],
+		queryKey: ['repo', $page.params.name],
 		queryFn: () => fetch(API.REPOSITORY($page.params.name)).then((res) => res.json()),
 		cacheTime: CACHE_TIME,
 		staleTime: CACHE_TIME,
