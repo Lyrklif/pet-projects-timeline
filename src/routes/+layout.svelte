@@ -1,20 +1,19 @@
 <script>
 	import Header from './Header.svelte';
+	import Footer from './Footer.svelte';
 	import { QueryClientProvider } from '@sveltestack/svelte-query';
 	import queryClient from '$lib/queryClient';
 	import '../app.css';
 </script>
 
 <QueryClientProvider client={queryClient}>
-	<div class="app">
+	<div class="app max-w-screen-2xl mx-auto">
 		<Header />
 
-		<main>
+		<main class="py-10 px-4 md:px-10">
 			<slot />
 		</main>
 
-		<footer>
-			<p>visit <a href="https://github.com/lyrklif">GitHub</a></p>
-		</footer>
+		<Footer />
 	</div>
 </QueryClientProvider>

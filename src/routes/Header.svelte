@@ -1,29 +1,16 @@
 <script>
-	import github from '$lib/images/github.svg';
+	import { page } from '$app/stores';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
+	$: activeUrl = $page.url.pathname;
 </script>
 
-<header>
-	<nav>
-		<ul>
-			<li>
-				<a href="/">Home</a>
-			</li>
-			<li>
-				<a href="/about">About</a>
-			</li>
-			<li>
-				<a href="/pet/pet1">Pet 1</a>
-			</li>
-			<li>
-				<a href="/pet/pet2">Pet 2</a>
-			</li>
-		</ul>
-	</nav>
-
-	<div class="corner">
-		<a href="https://github.com/lyrklif">
-			<img src={github} alt="GitHub" height="30" width="30" />
-			<span>GitHub</span>
-		</a>
-	</div>
-</header>
+<Navbar class="px-4 md:px-10 py-2.5 sticky w-full z-10 top-0 start-0 border-b">
+	<NavBrand href="/">
+		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Home</span>
+	</NavBrand>
+	<NavHamburger />
+	<NavUl {activeUrl}>
+		<NavLi href="/about">About</NavLi>
+		<NavLi href={import.meta.env.VITE_GITHUB_LINK} target="_blank">GitHub</NavLi>
+	</NavUl>
+</Navbar>
