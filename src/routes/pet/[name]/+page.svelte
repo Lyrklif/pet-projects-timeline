@@ -55,7 +55,7 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<A href="/" class="font-medium hover:underline mr-auto">Back</A>
+<A href="/pets" class="font-medium hover:underline mr-auto">Back</A>
 
 <header>
 	<Heading tag="h1">{$page.params.name}</Heading>

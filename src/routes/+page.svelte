@@ -100,7 +100,8 @@
 
 					<div class="flex flex-wrap gap-2 mt-4">
 						<ButtonGroup>
-							<Button href={`/pet/${repo.name}`} size="xs" outline color="dark">Details</Button>
+							<Button href={`/pets/pet/${repo.name}`} size="xs" outline color="dark">Details</Button
+							>
 							<Button href={repo.html_url} target="_blank" size="xs" outline color="dark"
 								>Code</Button
 							>
