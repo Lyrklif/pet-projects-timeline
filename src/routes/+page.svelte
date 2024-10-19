@@ -13,23 +13,37 @@
 	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../constants/query';
+	import { formatDate } from '../stores/date';
 
 	const queryRepositories = useQuery({
 		queryKey: ['repositories'],
 		queryFn: () => fetch(API.REPOSITORIES).then((res) => res.json()),
 		cacheTime: CACHE_TIME,
 		staleTime: CACHE_TIME,
-		select: (context) => context || []
+		select: (context) => {
+			if (!context?.length) {
+				return [];
+			}
+
+			const withoutSpecialRepository = context.filter(
+				(repo) => repo.name !== import.meta.env.VITE_USER_NAME
+			);
+
+			return withoutSpecialRepository;
+		}
 	});
 </script>
 
 <svelte:head>
-	<title>Pet projects</title>
+	<title>Pet projects by {import.meta.env.VITE_USER_NAME}</title>
 	<meta name="description" content="Timeline of pet projects" />
 </svelte:head>
 
 <header>
 	<Heading tag="h1">Pet projects</Heading>
+	<P class="text-center text-md text-gray-500 dark:text-gray-400 mt-3">
+		by {import.meta.env.VITE_USER_NAME}
+	</P>
 	<P class="text-center text-md text-gray-500 dark:text-gray-400 mt-3">(/◔ ◡ ◔)/ Frontend</P>
 </header>
 
@@ -41,17 +55,17 @@
 {:else}
 	<Timeline class="mt-6">
 		{#each $queryRepositories.data as repo}
-			<TimelineItem title={repo.name} date={repo.created_at}>
-				<Card class="max-w-full p-4 sm:p-4">
+			<TimelineItem title={repo.name} date={formatDate(repo.created_at)}>
+				<Card class="max-w-full p-4 sm:p-4 mt-2">
 					{#if repo.archived}
-						<div>
+						<div class="mb-2">
 							<Badge color="dark" rounded class="px-2.5 py-0.5">
 								<Indicator color="gray" size="xs" class="me-1" />Archived
 							</Badge>
 						</div>
 					{/if}
 
-					<P class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+					<P class="text-base font-normal text-gray-500 dark:text-gray-400">
 						{repo.description || 'No description'}
 					</P>
 
@@ -67,12 +81,20 @@
 
 					<div class="flex flex-wrap gap-2 mt-4">
 						<ButtonGroup>
-							<Button href={`/pet/${repo.name}`} outline color="dark">Details</Button>
-							<Button href={repo.html_url} target="_blank" outline color="dark">Code</Button>
+							<Button href={`/pet/${repo.name}`} size="xs" outline color="dark">Details</Button>
+							<Button href={repo.html_url} target="_blank" size="xs" outline color="dark">
+								Code
+							</Button>
 						</ButtonGroup>
 
 						{#if repo.homepage}
-							<GradientButton href={repo.homepage} target="_blank" outline color="greenToBlue">
+							<GradientButton
+								href={repo.homepage}
+								target="_blank"
+								size="xs"
+								outline
+								color="greenToBlue"
+							>
 								Demo
 							</GradientButton>
 						{/if}
