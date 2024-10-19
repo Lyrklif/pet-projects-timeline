@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, P, Badge, Indicator, Button, Card, GradientButton } from 'flowbite-svelte';
+	import { Heading, P, A, Badge, Indicator, Button, Card, GradientButton } from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../../../constants/query';
 	import { page } from '$app/stores';
@@ -45,6 +45,8 @@
 	<title>{$page.params.name}</title>
 	<meta name="description" content={description} />
 </svelte:head>
+
+<A href="/" class="font-medium hover:underline mr-auto">Back</A>
 
 <header>
 	<Heading tag="h1">{$page.params.name}</Heading>

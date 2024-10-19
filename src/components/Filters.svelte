@@ -43,9 +43,8 @@
 		<Button
 			outline={!selectedFilters.includes(filter)}
 			on:click={() => selectFilter(filter)}
-			class="relative"
+			class="relative border-0"
 			size="xs"
-			color="dark"
 		>
 			{filter}
 

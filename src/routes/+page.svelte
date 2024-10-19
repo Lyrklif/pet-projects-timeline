@@ -93,7 +93,7 @@
 	An error has occurred:
 	{$queryRepositories.error}
 {:else}
-	<div class="my-5">
+	<div class="mt-10 mb-4">
 		<Filters allFilters={Array.from(topics)} on:filter={handleFilter} />
 	</div>
 
