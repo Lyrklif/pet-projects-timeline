@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Heading, P } from 'flowbite-svelte';
+	import { Heading, P, Badge, Indicator, Button, Card, GradientButton } from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../../../constants/query';
 	import { page } from '$app/stores';
@@ -34,35 +34,71 @@
 	});
 </script>
 
-<header>
-	<Heading tag="h1">Project page for {$page.params.name}</Heading>
-</header>
+<Card class="max-w-full">
+	<header>
+		<Heading tag="h1">{$page.params.name}</Heading>
+	</header>
 
-{#if $queryRepository.isLoading}
-	Loading...
-{:else if $queryRepository.error}
-	An error has occurred:
-	{$queryRepository.error}
-{:else}
-	<div>
-		<P>created_at: {$queryRepository.data.created_at}</P>
-		<P>archived: {$queryRepository.data.archived}</P>
-		<P>description: {$queryRepository.data.description}</P>
-		<P>homepage: {$queryRepository.data.homepage}</P>
-		<P>language: {$queryRepository.data.language}</P>
-		<P>topics: {$queryRepository.data.topics}</P>
-	</div>
-{/if}
+	{#if $queryRepository.isLoading}
+		Loading...
+	{:else if $queryRepository.error}
+		An error has occurred:
+		{$queryRepository.error}
+	{:else}
+		<div>
+			<P>created_at: {$queryRepository.data.created_at}</P>
 
-<Heading tag="h2">Readme</Heading>
+			{#if $queryRepository.data.archived}
+				<Badge color="dark" rounded class="px-2.5 py-0.5">
+					<Indicator color="gray" size="xs" class="me-1" />Archived
+				</Badge>
+			{/if}
 
-{#if $queryReadme.isLoading}
-	Loading...
-{:else if $queryReadme.error}
-	An error has occurred:
-	{$queryReadme.error}
-{:else}
-	<div class="markdown">
-		{@html $queryReadme.data}
-	</div>
-{/if}
+			<P class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
+				{$queryRepository.data.description || 'No description'}
+			</P>
+
+			{#if $queryRepository.data.topics.length > 0}
+				<ul class="flex flex-wrap gap-1 mt-2">
+					{#each $queryRepository.data.topics as topic}
+						<li>
+							<Badge border color="dark">{topic}</Badge>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+
+			<div class="flex flex-wrap gap-2 mt-4">
+				<Button href={$queryRepository.data.html_url} target="_blank" outline color="dark">
+					Code
+				</Button>
+
+				{#if $queryRepository.data.homepage}
+					<GradientButton
+						href={$queryRepository.data.homepage}
+						target="_blank"
+						outline
+						color="greenToBlue"
+					>
+						Demo
+					</GradientButton>
+				{/if}
+			</div>
+		</div>
+	{/if}
+</Card>
+
+<Card class="max-w-full mt-10">
+	<Heading tag="h6" class="mb-4">/readme.md</Heading>
+
+	{#if $queryReadme.isLoading}
+		Loading...
+	{:else if $queryReadme.error}
+		An error has occurred:
+		{$queryReadme.error}
+	{:else}
+		<div class="markdown">
+			{@html $queryReadme.data}
+		</div>
+	{/if}
+</Card>
