@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		Heading,
 		P,
@@ -14,6 +14,33 @@
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../constants/query';
 	import { formatDate } from '../stores/date';
+	import Filters from '../components/Filters.svelte';
+
+	let topics: Array<string> = [];
+	let list: Array<any> = [];
+	let filteredList: Array<any> = [];
+
+	const handleFilter = ({ detail }: { detail: Array<string> }) => {
+		if (!detail.length) {
+			filteredList = list;
+
+			return;
+		}
+
+		filteredList = list.filter((project) => {
+			const topics = project.topics || [];
+			const selected = detail || [];
+			let has = false;
+
+			selected.forEach((tag) => {
+				if (topics.includes(tag)) {
+					has = true;
+				}
+			});
+
+			return has;
+		});
+	};
 
 	const queryRepositories = useQuery({
 		queryKey: ['repositories'],
@@ -29,7 +56,18 @@
 				(repo) => repo.name !== import.meta.env.VITE_USER_NAME
 			);
 
+			withoutSpecialRepository.forEach((item) => {
+				if (item) {
+					item.topics.forEach((value) => {
+						topics.push(value);
+					});
+				}
+			});
+
 			withoutSpecialRepository.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+			list = withoutSpecialRepository;
+			filteredList = withoutSpecialRepository;
 
 			return withoutSpecialRepository;
 		}
@@ -55,10 +93,14 @@
 	An error has occurred:
 	{$queryRepositories.error}
 {:else}
-	<Timeline class="mt-6">
-		{#each $queryRepositories.data as repo}
+	<div class="my-5">
+		<Filters allFilters={Array.from(topics)} on:filter={handleFilter} />
+	</div>
+
+	<Timeline class="mt-6 w-full">
+		{#each filteredList as repo}
 			<TimelineItem title={repo.name} date={formatDate(repo.created_at)}>
-				<Card class="max-w-full p-4 sm:p-4 mt-2">
+				<Card class=" max-w-full p-4 sm:p-4 mt-2">
 					{#if repo.archived}
 						<div class="mb-2">
 							<Badge color="dark" rounded class="px-2.5 py-0.5">
