@@ -10,7 +10,7 @@
 	<div class="app max-w-screen-2xl mx-auto">
 		<Header />
 
-		<main class="py-10 px-4 md:px-10 flex flex-col items-center">
+		<main class="py-10 px-4 md:px-10 flex flex-col items-center max-w-screen-md mx-auto">
 			<slot />
 		</main>
 

@@ -42,7 +42,7 @@
 	<Timeline class="mt-6">
 		{#each $queryRepositories.data as repo}
 			<TimelineItem title={repo.name} date={repo.created_at}>
-				<Card class="max-w-screen-md p-4 sm:p-4">
+				<Card class="max-w-full p-4 sm:p-4">
 					{#if repo.archived}
 						<div>
 							<Badge color="dark" rounded class="px-2.5 py-0.5">
