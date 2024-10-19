@@ -2,7 +2,7 @@
 	import { Navbar, Button } from 'flowbite-svelte';
 </script>
 
-<Navbar class="px-4 md:px-10 py-0 sticky w-full z-10 top-0 start-0 border-b">
+<Navbar class="px-4 md:px-10 py-0 w-full border-0">
 	<Button
 		href={import.meta.env.VITE_GITHUB_LINK}
 		target="_blank"
