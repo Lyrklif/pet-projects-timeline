@@ -9,7 +9,9 @@
 		Button,
 		GradientButton,
 		ButtonGroup,
-		Card
+		Card,
+		Spinner,
+		Alert
 	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../constants/query';
@@ -79,7 +81,7 @@
 	<meta name="description" content="Timeline of pet projects" />
 </svelte:head>
 
-<header>
+<header class="mb-10">
 	<Heading tag="h1">Pet projects</Heading>
 	<P class="text-center text-md text-gray-500 dark:text-gray-400 mt-3">
 		by {import.meta.env.VITE_USER_NAME}
@@ -88,12 +90,14 @@
 </header>
 
 {#if $queryRepositories.isLoading}
-	Loading...
+	<Spinner size="10" class="text-center" />
 {:else if $queryRepositories.error}
 	An error has occurred:
-	{$queryRepositories.error}
+	<Alert color="red">
+		{$queryRepositories.error}
+	</Alert>
 {:else}
-	<div class="mt-10 mb-4">
+	<div class="mb-4">
 		<Filters allFilters={Array.from(topics)} on:filter={handleFilter} />
 	</div>
 

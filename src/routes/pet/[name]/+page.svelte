@@ -1,5 +1,16 @@
 <script lang="ts">
-	import { Heading, P, A, Badge, Indicator, Button, Card, GradientButton } from 'flowbite-svelte';
+	import {
+		Heading,
+		P,
+		A,
+		Badge,
+		Indicator,
+		Button,
+		Card,
+		GradientButton,
+		Spinner,
+		Alert
+	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
 	import { CACHE_TIME, API } from '../../../constants/query';
 	import { page } from '$app/stores';
@@ -53,10 +64,12 @@
 </header>
 
 {#if $queryRepository.isLoading}
-	Loading...
+	<Spinner size="10" class="text-center mt-10" />
 {:else if $queryRepository.error}
 	An error has occurred:
-	{$queryRepository.error}
+	<Alert color="red" class="mt-10">
+		{$queryRepository.error}
+	</Alert>
 {:else}
 	<div class="text-center">
 		<P class="text-center text-md text-gray-500 dark:text-gray-400 mt-3">
@@ -103,13 +116,15 @@
 {/if}
 
 <Card class="max-w-full mt-10">
-	<Heading tag="h6" class="mb-4">/readme.md</Heading>
+	<Heading tag="h6" class="mb-10">/readme.md</Heading>
 
 	{#if $queryReadme.isLoading}
-		Loading...
+		<Spinner size="10" class="text-center" />
 	{:else if $queryReadme.error}
 		An error has occurred:
-		{$queryReadme.error}
+		<Alert color="red">
+			{$queryReadme.error}
+		</Alert>
 	{:else}
 		<div class="markdown">
 			{@html $queryReadme.data}
