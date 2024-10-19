@@ -29,6 +29,8 @@
 				(repo) => repo.name !== import.meta.env.VITE_USER_NAME
 			);
 
+			withoutSpecialRepository.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
 			return withoutSpecialRepository;
 		}
 	});
