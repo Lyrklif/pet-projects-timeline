@@ -17,6 +17,7 @@
 	import { CACHE_TIME, API } from '../constants/query';
 	import { formatDate } from '../stores/date';
 	import Filters from '../components/Filters.svelte';
+	import { base } from '$app/paths';
 
 	let topics: Array<string> = [];
 	let list: Array<any> = [];
@@ -100,7 +101,8 @@
 
 					<div class="flex flex-wrap gap-2 mt-4">
 						<ButtonGroup>
-							<Button href={`/pets/pet/${repo.name}`} size="xs" outline color="dark">Details</Button
+							<Button href={`${base}/pet/${repo.name}`} size="xs" outline color="dark"
+								>Details</Button
 							>
 							<Button href={repo.html_url} target="_blank" size="xs" outline color="dark"
 								>Code</Button

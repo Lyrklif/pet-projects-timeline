@@ -16,6 +16,7 @@
 	import { page } from '$app/stores';
 	import { marked } from 'marked';
 	import { formatDate } from '../../../stores/date';
+	import { base } from '$app/paths';
 
 	let description: string = '';
 
@@ -55,7 +56,7 @@
 	<meta name="description" content={description} />
 </svelte:head>
 
-<A href="/pets" class="font-medium hover:underline mr-auto">Back</A>
+<A href={`${base}`} class="font-medium hover:underline mr-auto">Back</A>
 
 <header>
 	<Heading tag="h1">{$page.params.name}</Heading>
