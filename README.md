@@ -51,7 +51,7 @@ VITE_API=<GitHub API URL, e.g., https://api.github.com>
 npm run dev
 ```
 
-5. Open your browser and go to `http://localhost:3000`.
+5. Open your browser and go to `http://localhost:5173`.
 
 ## Deployment
 
