@@ -1,38 +1,102 @@
-# create-svelte
+# Pet Projects Timeline
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+**Pet Projects Timeline** is a web application that helps you track and showcase your pet projects over time. It displays a timeline of your personal projects, allowing you to filter and view details of each project. The app is built with SvelteKit and hosted on GitHub Pages.
 
-## Creating a project
+![Project Screenshot](TODO add screenshot)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
+- **Timeline of Projects:** View a chronological list of your pet projects.
+- **Filters:** Filter projects by topic.
+- **GitHub Integration:** Projects are fetched directly from GitHub repositories.
+- **Responsive Design:** Works well on both desktop and mobile devices.
+- **Static Hosting:** Deployed using GitHub Pages.
+
+## Demo
+
+Check out the live demo: [Pet Projects Timeline](https://lyrklif.github.io/pet-projects-timeline/)
+
+## Installation
+
+To run the project locally, follow these steps:
+
+1. Clone the repository:
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+git clone https://github.com/lyrklif/pet-projects-timeline.git
 ```
 
-## Developing
+2. Install dependencies:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root directory based on the `.env.example` file:
+
+```bash
+cp .env.example .env
+```
+
+Fill in the following values in the `.env` file:
+
+```bash
+VITE_USER_NAME=<Your GitHub username>
+VITE_GITHUB_LINK=<Your GitHub profile link>
+VITE_API=<GitHub API URL, e.g., https://api.github.com>
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+5. Open your browser and go to `http://localhost:3000`.
 
-To create a production version of your app:
+## Deployment
+
+This project is set up for deployment to GitHub Pages using the `@sveltejs/adapter-static`. To deploy it, simply run:
 
 ```bash
-npm run build
+npm run deploy
 ```
 
-You can preview the production build with `npm run preview`.
+Make sure that the base path is set correctly in the `svelte.config.js` file:
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+```js
+paths: {
+  base: '<repository-name>'
+}
+```
+
+And `static/404.html`
+
+```js
+window.location.href = '/<repository-name>/#' + pathname;
+```
+
+## Tech Stack
+
+- **Framework:** SvelteKit
+- **Hosting:** GitHub Pages
+- **CSS Framework:** Flowbite-Svelte
+- **Data Fetching:** Svelte Query
+- **Markdown Parsing:** Marked.js
+
+## Environment Variables
+
+The project requires the following environment variables to be set in a `.env` file:
+
+- `VITE_USER_NAME` - Your GitHub username.
+- `VITE_GITHUB_LINK` - The link to your GitHub profile.
+- `VITE_API` - The GitHub API URL, e.g., `https://api.github.com`.
+
+An example of these variables can be found in the `.env.sample` file.
+
+## Contributions
+
+Contributions are welcome! If you have suggestions for improving the project or want to report an issue, feel free to open an issue or submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.
