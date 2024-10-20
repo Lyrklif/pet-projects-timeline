@@ -2,7 +2,9 @@
 
 **Pet Projects Timeline** is a web application that helps you track and showcase your pet projects over time. It displays a timeline of your personal projects, allowing you to filter and view details of each project. The app is built with SvelteKit and hosted on GitHub Pages.
 
-![Project Screenshot](TODO add screenshot)
+![Project Screenshot](https://github.com/user-attachments/assets/6a5a3a67-828a-419c-9565-663ec4225545)
+![Project Screenshot](https://github.com/user-attachments/assets/f3063f52-e58e-45b1-b5bd-0ece55092e24)
+
 
 ## Features
 
