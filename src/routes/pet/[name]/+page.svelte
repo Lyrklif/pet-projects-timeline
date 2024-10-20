@@ -55,7 +55,7 @@
 <A href={`${base}`} class="font-medium hover:underline mr-auto">Back</A>
 
 <header>
-	<Heading tag="h1">{$page.params.name}</Heading>
+	<Heading tag="h1" class="text-center">{$page.params.name}</Heading>
 </header>
 
 {#if $queryRepository.isLoading}

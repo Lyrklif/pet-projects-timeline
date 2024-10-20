@@ -14,7 +14,7 @@
 		Alert
 	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { CACHE_TIME, API } from '../constants/query';
+	import { API } from '../constants/query';
 	import { formatDate } from '../stores/date';
 	import Filters from '../components/Filters.svelte';
 	import { base } from '$app/paths';
@@ -53,7 +53,7 @@
 </svelte:head>
 
 <header class="mb-10">
-	<Heading tag="h1">Pet projects</Heading>
+	<Heading tag="h1" class="text-center">Pet projects</Heading>
 	<P class="text-center text-md text-gray-500 dark:text-gray-400 mt-3">
 		by {import.meta.env.VITE_USER_NAME}
 	</P>
