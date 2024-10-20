@@ -10,7 +10,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"predeploy": "npm run build",
-		"deploy": "gh-pages -d build"
+		"deploy": "gh-pages -d build --dotfiles"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.0.0",
