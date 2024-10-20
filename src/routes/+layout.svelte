@@ -2,7 +2,22 @@
 	import Header from './Header.svelte';
 	import { QueryClientProvider } from '@sveltestack/svelte-query';
 	import queryClient from '$lib/queryClient';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
 	import '../app.css';
+
+	onMount(() => {
+		if (window.location.hash) {
+			const path = window.location.hash.substring(1);
+
+			if (path.startsWith(base)) {
+				goto(path);
+			} else {
+				goto(base + path);
+			}
+		}
+	});
 </script>
 
 <QueryClientProvider client={queryClient}>
