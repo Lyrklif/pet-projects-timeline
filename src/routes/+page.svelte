@@ -18,23 +18,26 @@
 	import { formatDate } from '../stores/date';
 	import Filters from '../components/Filters.svelte';
 	import { base } from '$app/paths';
+	import type { TRepository } from '../types/repository';
 
 	let topics: Array<string> = [];
-	let list: Array<any> = [];
-	let filteredList: Array<any> = [];
+	let list: Array<TRepository> = [];
+	let filteredList: Array<TRepository> = [];
 
 	const handleFilter = ({ detail }: { detail: Array<string> }) => {
 		filteredList = detail.length
-			? list.filter((project) => project.topics?.some((topic) => detail.includes(topic)))
+			? list.filter((project) => project.topics?.some((topic: string) => detail.includes(topic)))
 			: list;
 	};
 
 	const queryRepositories = useQuery({
 		queryKey: ['repositories'],
-		queryFn: async () => {
+		queryFn: async (): Promise<TRepository[]> => {
 			const response = await fetch(API.REPOSITORIES);
 			const repositories = await response.json();
-			return repositories.filter((repo) => repo.name !== import.meta.env.VITE_USER_NAME);
+			return repositories.filter(
+				(repo: TRepository) => repo.name !== import.meta.env.VITE_USER_NAME
+			);
 		},
 		select: (repos) => {
 			repos.forEach((repo) => repo.topics?.forEach((topic: string) => topics.push(topic)));

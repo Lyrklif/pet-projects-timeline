@@ -12,11 +12,12 @@
 		Alert
 	} from 'flowbite-svelte';
 	import { useQuery } from '@sveltestack/svelte-query';
-	import { CACHE_TIME, API } from '../../../constants/query';
+	import { API } from '../../../constants/query';
 	import { page } from '$app/stores';
 	import { marked } from 'marked';
 	import { formatDate } from '../../../stores/date';
 	import { base } from '$app/paths';
+	import type { TRepository } from '../../../types/repository';
 
 	let description: string = '';
 
@@ -38,7 +39,7 @@
 
 	const queryRepository = useQuery({
 		queryKey: ['repo', $page.params.name],
-		queryFn: async () => {
+		queryFn: async (): Promise<TRepository> => {
 			const res = await fetch(API.REPOSITORY($page.params.name));
 			const data = await res.json();
 			description = data.description || 'No description';
