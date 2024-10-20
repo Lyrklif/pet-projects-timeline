@@ -36,8 +36,6 @@
 			const repositories = await response.json();
 			return repositories.filter((repo) => repo.name !== import.meta.env.VITE_USER_NAME);
 		},
-		cacheTime: CACHE_TIME,
-		staleTime: CACHE_TIME,
 		select: (repos) => {
 			repos.forEach((repo) => repo.topics?.forEach((topic: string) => topics.push(topic)));
 			list = repos.sort(

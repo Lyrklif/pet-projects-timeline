@@ -33,9 +33,7 @@
 			const res = await fetch(API.REPO_README($page.params.name));
 			const data = await res.json();
 			return marked(decodeReadmeContent(data.content));
-		},
-		cacheTime: CACHE_TIME,
-		staleTime: CACHE_TIME
+		}
 	});
 
 	const queryRepository = useQuery({
@@ -45,9 +43,7 @@
 			const data = await res.json();
 			description = data.description || 'No description';
 			return data;
-		},
-		cacheTime: CACHE_TIME,
-		staleTime: CACHE_TIME
+		}
 	});
 </script>
 
