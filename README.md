@@ -93,7 +93,7 @@ The project requires the following environment variables to be set in a `.env` f
 - `VITE_GITHUB_LINK` - The link to your GitHub profile.
 - `VITE_API` - The GitHub API URL, e.g., `https://api.github.com`.
 
-An example of these variables can be found in the `.env.sample` file.
+An example of these variables can be found in the `.env.example` file.
 
 ## Contributions
 
