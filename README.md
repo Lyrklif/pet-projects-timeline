@@ -45,6 +45,7 @@ Fill in the following values in the `.env` file:
 VITE_USER_NAME=<Your GitHub username>
 VITE_GITHUB_LINK=<Your GitHub profile link>
 VITE_API=<GitHub API URL, e.g., https://api.github.com>
+VITE_EXCLUDED_REPOSITORIES=<Comma-separated list of repository names to exclude>
 ```
 
 4. Run the development server:
@@ -92,6 +93,7 @@ The project requires the following environment variables to be set in a `.env` f
 - `VITE_USER_NAME` - Your GitHub username.
 - `VITE_GITHUB_LINK` - The link to your GitHub profile.
 - `VITE_API` - The GitHub API URL, e.g., `https://api.github.com`.
+- `VITE_EXCLUDED_REPOSITORIES` - A comma-separated string of repository names that should be excluded from the timeline (e.g., `repo1,repo2,repo3`).
 
 An example of these variables can be found in the `.env.example` file.
 
