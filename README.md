@@ -100,7 +100,3 @@ An example of these variables can be found in the `.env.example` file.
 ## Contributions
 
 Contributions are welcome! If you have suggestions for improving the project or want to report an issue, feel free to open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License.
