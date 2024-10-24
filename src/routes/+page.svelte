@@ -35,9 +35,10 @@
 		queryFn: async (): Promise<TRepository[]> => {
 			const response = await fetch(API.REPOSITORIES);
 			const repositories = await response.json();
-			return repositories.filter(
-				(repo: TRepository) => repo.name !== import.meta.env.VITE_USER_NAME
-			);
+
+			const excludes = import.meta.env.VITE_EXCLUDED_REPOSITORIES.split(',');
+
+			return repositories.filter((repo: TRepository) => excludes.includes(repo.name) === false);
 		},
 		select: (repos) => {
 			repos.forEach((repo) => repo.topics?.forEach((topic: string) => topics.push(topic)));
